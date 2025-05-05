@@ -245,7 +245,8 @@ def parse_train_args(cfg: Dict, mode: str = "training") -> Tuple:
     loss_type: str = cfg.get("loss", "crossentropy")
     label_smoothing: float = cfg.get("label_smoothing", 0.0)
     if loss_type not in ["crossentropy"]:
-        raise ConfigurationError("Invalid `loss` type. Valid option: {`crossentropy`}.")
+        raise ConfigurationError(
+            "Invalid `loss` type. Valid option: {`crossentropy`}.")
 
     # minimum learning rate for early stopping
     learning_rate_min: float = cfg.get("learning_rate_min", 1.0e-8)
@@ -264,7 +265,8 @@ def parse_train_args(cfg: Dict, mode: str = "training") -> Tuple:
     log_valid_sents: List[int] = cfg.get("print_valid_sents", [0, 1, 2])
 
     # early stopping
-    early_stopping_metric: str = cfg.get("early_stopping_metric", "ppl").lower()
+    early_stopping_metric: str = cfg.get(
+        "early_stopping_metric", "ppl").lower()
     if early_stopping_metric not in ["acc", "loss", "ppl", "bleu", "chrf"]:
         raise ConfigurationError(
             "Invalid setting for `early_stopping_metric`. "
@@ -368,7 +370,8 @@ def parse_test_args(cfg: Dict) -> Tuple:
     beam_alpha: float = cfg.get("beam_alpha", -1)
     if "alpha" in cfg:
         beam_alpha = cfg["alpha"]
-        logger.warning("`alpha` option is obsolete. Please use `beam_alpha`, instead.")
+        logger.warning(
+            "`alpha` option is obsolete. Please use `beam_alpha`, instead.")
     assert beam_size > 0, "Beam size must be > 0."
     assert n_best > 0, "N-best size must be > 0."
     assert n_best <= beam_size, "`n_best` must be smaller than or equal to `beam_size`."
@@ -473,7 +476,8 @@ def get_latest_checkpoint(ckpt_dir: Path) -> Optional[Path]:
 
     # check existence
     if latest_checkpoint is None:
-        raise FileNotFoundError(f"No checkpoint found in directory {ckpt_dir}.")
+        raise FileNotFoundError(
+            f"No checkpoint found in directory {ckpt_dir}.")
     return latest_checkpoint
 
 

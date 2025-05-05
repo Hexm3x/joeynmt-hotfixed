@@ -132,7 +132,8 @@ class RecurrentDecoder(Decoder):
         # to initialize from the final encoder state of last layer
         self.init_hidden_option = init_hidden
         if self.init_hidden_option == "bridge":
-            self.bridge_layer = nn.Linear(encoder.output_size, hidden_size, bias=True)
+            self.bridge_layer = nn.Linear(
+                encoder.output_size, hidden_size, bias=True)
         elif self.init_hidden_option == "last":
             if encoder.output_size != self.hidden_size:
                 if encoder.output_size != 2 * self.hidden_size:  # bidirectional
@@ -525,7 +526,7 @@ class TransformerDecoder(Decoder):
                 num_heads=num_heads,
                 dropout=dropout,
                 alpha=kwargs.get("alpha", 1.0),
-                layer_norm=kwargs.get("layer_norm", "post"),
+                layer_norm=kwargs.get("layer_norm", "post"),  # default post
                 activation=kwargs.get("activation", "relu"),
             ) for _ in range(num_layers)
         ])
@@ -574,7 +575,8 @@ class TransformerDecoder(Decoder):
         x = self.pe(trg_embed)  # add position encoding to word embedding
         x = self.emb_dropout(x)
 
-        trg_mask = trg_mask & subsequent_mask(trg_embed.size(1)).type_as(trg_mask)
+        trg_mask = trg_mask & subsequent_mask(
+            trg_embed.size(1)).type_as(trg_mask)
 
         last_layer = len(self.layers) - 1
         return_attention = kwargs.get("return_attention", False)

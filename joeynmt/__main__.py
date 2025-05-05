@@ -28,7 +28,8 @@ def main():
                     action="store_true",
                     help="save attention visualizations")
 
-    ap.add_argument("-s", "--save-scores", action="store_true", help="save scores")
+    ap.add_argument("-s", "--save-scores",
+                    action="store_true", help="save scores")
 
     ap.add_argument("-t",
                     "--skip-test",

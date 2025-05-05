@@ -123,7 +123,8 @@ class RecurrentEncoder(Encoder):
         # apply dropout to the rnn input
         src_embed = self.emb_dropout(src_embed)
 
-        packed = pack_padded_sequence(src_embed, src_length.cpu(), batch_first=True)
+        packed = pack_padded_sequence(
+            src_embed, src_length.cpu(), batch_first=True)
         output, hidden = self.rnn(packed)
 
         if isinstance(hidden, tuple):
@@ -151,7 +152,8 @@ class RecurrentEncoder(Encoder):
 
         # only feed the final state of the top-most layer to the decoder
         # pylint: disable=no-member
-        hidden_concat = torch.cat([fwd_hidden_last, bwd_hidden_last], dim=2).squeeze(0)
+        hidden_concat = torch.cat(
+            [fwd_hidden_last, bwd_hidden_last], dim=2).squeeze(0)
         # final: batch x directions*hidden
 
         assert hidden_concat.size(0) == output.size(0), (
@@ -204,7 +206,7 @@ class TransformerEncoder(Encoder):
                 num_heads=num_heads,
                 dropout=dropout,
                 alpha=kwargs.get("alpha", 1.0),
-                layer_norm=kwargs.get("layer_norm", "pre"),
+                layer_norm=kwargs.get("layer_norm", "post"),  # default pre
                 activation=kwargs.get("activation", "relu"),
             ) for _ in range(num_layers)
         ])

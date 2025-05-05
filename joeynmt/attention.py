@@ -72,7 +72,8 @@ class BahdanauAttention(AttentionMechanism):
         # Calculate scores.
         # proj_keys: batch x src_len x hidden_size
         # proj_query: batch x 1 x hidden_size
-        scores = self.energy_layer(torch.tanh(self.proj_query + self.proj_keys))
+        scores = self.energy_layer(torch.tanh(
+            self.proj_query + self.proj_keys))
         # scores: batch x src_len x 1
 
         scores = scores.squeeze(2).unsqueeze(1)

@@ -1,0 +1,10 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+joeynmt.egg-info/PKG-INFO
+joeynmt.egg-info/SOURCES.txt
+joeynmt.egg-info/dependency_links.txt
+joeynmt.egg-info/entry_points.txt
+joeynmt.egg-info/requires.txt
+joeynmt.egg-info/top_level.txt

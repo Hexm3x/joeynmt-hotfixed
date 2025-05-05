@@ -75,9 +75,12 @@ class MultiHeadedAttention(nn.Module):
 
         # reshape q, k, v for our computation to
         # [batch_size, num_heads, seq_len, head_dim]
-        k = k.view(batch_size, -1, self.num_heads, self.head_size).transpose(1, 2)
-        v = v.view(batch_size, -1, self.num_heads, self.head_size).transpose(1, 2)
-        q = q.view(batch_size, -1, self.num_heads, self.head_size).transpose(1, 2)
+        k = k.view(batch_size, -1, self.num_heads,
+                   self.head_size).transpose(1, 2)
+        v = v.view(batch_size, -1, self.num_heads,
+                   self.head_size).transpose(1, 2)
+        q = q.view(batch_size, -1, self.num_heads,
+                   self.head_size).transpose(1, 2)
 
         # compute scores
         q = q / math.sqrt(self.head_size)
@@ -122,7 +125,7 @@ class PositionwiseFeedForward(nn.Module):
         ff_size: int,
         dropout: float = 0.1,
         alpha: float = 1.0,
-        layer_norm: str = "post",
+        layer_norm: str = "post",  # default: post
         activation: str = "relu",
     ) -> None:
         """
@@ -219,7 +222,7 @@ class TransformerEncoderLayer(nn.Module):
         num_heads: int = 0,
         dropout: float = 0.1,
         alpha: float = 1.0,
-        layer_norm: str = "post",
+        layer_norm: str = "post",  # default post
         activation: str = "relu",
     ) -> None:
         """
@@ -239,7 +242,8 @@ class TransformerEncoderLayer(nn.Module):
         super().__init__()
 
         self.layer_norm = nn.LayerNorm(size, eps=1e-6)
-        self.src_src_att = MultiHeadedAttention(num_heads, size, dropout=dropout)
+        self.src_src_att = MultiHeadedAttention(
+            num_heads, size, dropout=dropout)
 
         self.feed_forward = PositionwiseFeedForward(
             size,
@@ -296,7 +300,7 @@ class TransformerDecoderLayer(nn.Module):
         num_heads: int = 0,
         dropout: float = 0.1,
         alpha: float = 1.0,
-        layer_norm: str = "post",
+        layer_norm: str = "post",  # default post
         activation: str = "relu",
     ) -> None:
         """
@@ -317,8 +321,10 @@ class TransformerDecoderLayer(nn.Module):
         super().__init__()
         self.size = size
 
-        self.trg_trg_att = MultiHeadedAttention(num_heads, size, dropout=dropout)
-        self.src_trg_att = MultiHeadedAttention(num_heads, size, dropout=dropout)
+        self.trg_trg_att = MultiHeadedAttention(
+            num_heads, size, dropout=dropout)
+        self.src_trg_att = MultiHeadedAttention(
+            num_heads, size, dropout=dropout)
 
         self.feed_forward = PositionwiseFeedForward(
             size,
